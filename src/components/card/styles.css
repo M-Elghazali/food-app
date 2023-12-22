@@ -1,0 +1,146 @@
+.main {
+    height: 350px;
+    width: 100%;
+    background-image: url(../../assets/bg-table.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card {
+    width: 90%;
+    margin-inline: auto;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.card-info {
+    width: 40%;
+    padding: 1.2rem 1.4rem;
+    text-align: center;
+    margin-inline: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    background-color: rgb(27, 23, 23);
+    color: #fff;
+    margin-top: -6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.card-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    line-height: 120%;
+}
+
+.card-info p {
+    font-size: 1.2rem;
+    line-height: 150%;
+}
+
+.card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #bbb;
+    padding: 1rem 0px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.item img {
+    max-height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    border: 2px solid orange;
+    transform: translateY(-5px);
+    backdrop-filter: blur(3px);
+}
+
+.img-bg {
+    background-color: rgba(255, 165, 0, 0.35);
+    border-radius: 50%;
+}
+
+.item h4 {
+    font-size: 1.5rem;
+}
+
+.item h5 {
+    font-size: 1.3rem;
+    color: orange;
+}
+
+.item-amount {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.item-amount button {
+    border: none;
+    padding: 8px 3rem;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 25px;
+    background: orange;
+    color: #fff;
+    transition: .3s;
+
+}
+
+.item-amount button:hover {
+    background: rgb(255, 182, 48);
+}
+
+.item-amount input {
+    padding: 7px;
+    outline: none;
+    border-radius: 8px;
+    border: 1px solid #111;
+    transition: .3s;
+    font-size: 1.1rem;
+    width: 120px;
+}
+
+.item-amount input:focus {
+    border: 1px solid orange;
+}
+
+
+
+.danger:focus {
+    border: 1px solid red !important;
+}
+
+
+/* Add this to your CSS */
+@keyframes bump {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bump {
+    animation: bump 0.5s ease-out;
+}

@@ -1,84 +1,95 @@
-import "./navbar.css";
+// Importing necessary dependencies and styles
 import React, { Fragment, useState, useEffect, useContext } from "react";
+import "./navbar.css";
 import OverlayBox from "../overlay/Overlay";
 import Total from "../cart/Total";
 import CartItem from "../card/CartItem";
 import foodItems from "../card/foodInfo";
 import MyContext from "../context/UserContext";
 
+// Navbar component definition
 function Navbar({ cartState, cartIconClass, value }) {
+  // State for the amount of each item added to the cart
+  const [addedAmount, setAddAmount] = useState(
+    value.filter((item) => item !== 0)
+  );
+
+  // State for controlling the visibility of the overlay
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+  // State for the total price of items in the cart
   const [totalPrice, setTotalPrice] = useState(null);
 
+  // Context for managing the global cart value
   const { setCartValue } = useContext(MyContext);
 
-  const totalItemsInCart = value.reduce((acc, quantity) => acc + quantity, 0);
+  // Effect to update addedAmount state when the value prop changes
+
+  // Function to increase the quantity of a specific item in the cart
+  const Increase = (index) => {
+    const newAmount = [...addedAmount];
+    if (newAmount[index] === 10) {
+      return;
+    }
+    newAmount[index] += 1;
+    setAddAmount(newAmount);
+    setCartValue(newAmount.reduce((acc, quantity) => acc + quantity, 0));
+    value = newAmount;
+  };
+
+  // Function to decrease the quantity of a specific item in the cart
+  const Decrease = (index) => {
+    const newAmount = [...addedAmount];
+    if (newAmount[index] === 0) {
+      return;
+    }
+    newAmount[index] -= 1;
+    setAddAmount(newAmount);
+    setCartValue(newAmount.reduce((acc, quantity) => acc + quantity, 0));
+    value = newAmount;
+  };
+
+  useEffect(() => {
+    setAddAmount(value.filter((item) => item !== 0));
+    console.log(value);
+  }, [value]);
+  // Filter items with non-zero quantities
+  const addedItem = foodItems.filter((item, index) => value[index] !== 0);
+
+  // Calculate the total price of items in the cart
+  let totalPce = addedItem.reduce((acc, item, index = 0) => {
+    return acc + item.price * addedAmount[index];
+  }, 0);
+
+  // Update total price when totalPce changes
+  useEffect(() => {
+    setTotalPrice(totalPce);
+  }, [totalPce]);
+
+  // Map items to CartItem components
+  const items = addedItem.map((item, index) => (
+    <CartItem
+      key={item.id}
+      imgSrc={item.img}
+      foodName={item.name}
+      staticPrice={`$${item.price}`}
+      amount={addedAmount[index]}
+      ClickDecrease={() => Decrease(index)}
+      ClickIncrease={() => Increase(index)}
+    />
+  ));
+
+  // Open overlay function
   const openOverlay = () => {
     setIsOverlayVisible(true);
   };
 
-  let totalPce = foodItems.reduce(
-    (acc, item, index) => acc + item.price * value[index],
-    0
-  );
-
-  useEffect(
-    () => {
-      setTotalPrice(totalPce);
-      setCartValue(totalItemsInCart);
-    },
-    [totalPce],
-    [totalItemsInCart]
-  );
-
+  // Close overlay function
   const closeOverlay = () => {
     setIsOverlayVisible(false);
   };
 
-  const addedItem = foodItems.filter((item, index) => value[index] > 0);
-  const [addedAmount, setAddamount] = useState([0, 0, 0, 0]);
-
-  useEffect(() => {
-    setAddamount(value);
-  }, [value]);
-
-  const Decrease = (index) => {
-    const updatedItems = [...addedAmount];
-    if (updatedItems[index] > 0) {
-      updatedItems[index] -= 1;
-      setAddamount(updatedItems);
-      value[index] -= 1;
-    }
-    if (value[index] <= 0) {
-      value[index] = 0;
-    }
-  };
-
-  const Increase = (index) => {
-    // index here is the index of the item of foodItems
-    const updatedItems = [...addedAmount];
-    if (updatedItems[index] < 10) {
-      updatedItems[index] += 1;
-    }
-    setAddamount(updatedItems);
-    if (value[index] < 10) {
-      value[index] += 1;
-    }
-  };
-
-  const items = addedItem.map((item, index) => {
-    return (
-      <CartItem
-        key={item.id}
-        imgSrc={item.img}
-        foodName={item.name}
-        staticPrice={`$${item.price}`}
-        amount={addedAmount[index]}
-        ClickDecrease={() => Decrease(index)}
-        ClickIncrease={() => Increase(index)}
-      />
-    );
-  });
+  // JSX structure for the Navbar component
   return (
     <Fragment>
       {isOverlayVisible && (
@@ -88,7 +99,7 @@ function Navbar({ cartState, cartIconClass, value }) {
             <Total calc={totalPrice} />
             <div className="cart-last-btns">
               <button onClick={closeOverlay}>Cancel</button>
-              <button onClick={() => console.log("Checkout")}>Checkout</button>
+              <button onClick={() => console.log(addedItem)}>Checkout</button>
             </div>
           </div>
         </OverlayBox>
@@ -109,4 +120,5 @@ function Navbar({ cartState, cartIconClass, value }) {
   );
 }
 
+// Exporting the Navbar component
 export default Navbar;

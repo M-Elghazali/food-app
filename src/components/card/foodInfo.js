@@ -24,7 +24,7 @@ const foodItems = [
   },
   {
     name: "Sea Food",
-    price: 20,
+    price: 40,
     img: foodFour,
     id: 4,
   },
